@@ -1,0 +1,23 @@
+backstage:
+  image:
+    # -- Backstage image registry
+    registry: index.docker.io
+    # -- Backstage image repository
+    repository: purushothamkdr453/backstage
+    # -- Backstage image tag (immutable tags are recommended)
+    tag: v1
+  extraAppConfig:
+    - filename: app-config.extra.yaml
+      configMapRef: my-app-config
+postgresql:
+
+  # -- Switch to enable or disable the PostgreSQL helm chart
+  enabled: true
+service:
+
+  # -- Kubernetes Service type
+  type: ClusterIP
+
+  # -- Backstage svc port for client connections
+  ports:
+    backend: 80 
