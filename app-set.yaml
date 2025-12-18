@@ -1,0 +1,102 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: vcluster-apps-generator
+  namespace: argocd
+spec:
+  generators:
+    # - list:
+    #     elements:
+    #       - project: whitelabel
+    #         env: dev
+    #         path: apps/whitelabel/dev/vclusters/*
+    #       - project: whitelabel
+    #         env: test
+    #         path: apps/whitelabel/test/vclusters/*
+    #       - project: cbg
+    #         env: dev
+    #         path: apps/cbg/dev/vclusters/*
+    #       - project: cbg
+    #         env: test
+    #         path: apps/cbg/test/vclusters/*
+    # - git:
+    #      repoURL: https://github.com/purushothamkdr453/argodeployments
+    #      revision: main
+    #      directories:
+    #         - path: '{{base}}/*'
+  generators:
+    - git:
+        repoURL: https://github.com/purushothamkdr453/argodeployments
+        revision: main
+        directories:
+          - path: apps/*/*/vclusters/*
+  template:
+    metadata:
+      name: '{{ path[1] }}-{{ path[2] }}-{{ path[4] }}' 
+      #name: {{ path.basename }}
+      #name: '{{project}}-{{env}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/purushothamkdr453/argodeployments
+        targetRevision: main
+        path:  '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc     
+      syncPolicy:
+        automated:
+          enabled: true
+          prune: true
+          selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: db-apps-generator
+  namespace: argocd
+spec:
+  generators:
+    # - list:
+    #     elements:
+    #       - project: whitelabel
+    #         env: dev
+    #         path: apps/whitelabel/dev/vclusters/*
+    #       - project: whitelabel
+    #         env: test
+    #         path: apps/whitelabel/test/vclusters/*
+    #       - project: cbg
+    #         env: dev
+    #         path: apps/cbg/dev/vclusters/*
+    #       - project: cbg
+    #         env: test
+    #         path: apps/cbg/test/vclusters/*
+    # - git:
+    #      repoURL: https://github.com/purushothamkdr453/argodeployments
+    #      revision: main
+    #      directories:
+    #         - path: '{{base}}/*'
+  generators:
+    - git:
+        repoURL: https://github.com/purushothamkdr453/argodeployments
+        revision: main
+        directories:
+          - path: apps/*/*/vclusters/*/*/*
+  template:
+    metadata:
+      name: '{{ path[1] }}-{{ path[2] }}-{{ path[4] }}-{{ path[5] }}-{{ path[6] }}' 
+      #name: {{ path.basename }}
+      #name: '{{project}}-{{env}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/purushothamkdr453/argodeployments
+        targetRevision: main
+        path:  '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc     
+      syncPolicy:
+        automated:
+          enabled: true
+          prune: true
+          selfHeal: true
